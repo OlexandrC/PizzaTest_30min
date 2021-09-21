@@ -2,69 +2,94 @@
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace AvengaPizaTest
 {
     class Program
     {
+        static string FileName = "Test task #1 - Pizzas.json";
+        static string FileToRead = AppDomain.CurrentDomain.BaseDirectory + FileName;
+
+        static List<Pizza> AllPizzas = new List<Pizza>();
+        static Dictionary<Pizza, int> PopularToppings = new Dictionary<Pizza, int>();
+
         static void Main(string[] args)
         {
-            string FileName = "Test task #1 - Pizzas.json";
-            string FileToRead = AppDomain.CurrentDomain.BaseDirectory + FileName;
+            SetInputDatas();
 
-            //string FullText = File.ReadAllText(FileToRead);
-            //List<string> pizza = new List<string>();
+            ReadFile();
 
-            Dictionary<string, int> ToppingCalculation = new Dictionary<string, int>();
-            List<string> ToppingNames = new List<string>();
+            Calculate();
 
+            PrintResult();
+        }
+
+        static void SetInputDatas()
+        {
+            FileName = "Test task #1 - Pizzas.json";
+            FileToRead = AppDomain.CurrentDomain.BaseDirectory + FileName;
+        }
+
+        static void ReadFile()
+        {
             using (StreamReader r = new StreamReader(FileToRead))
             {
                 string json = r.ReadToEnd();
-                List<object> items = JsonConvert.DeserializeObject<List<object>>(json);
+                AllPizzas = JsonConvert.DeserializeObject<List<Pizza>>(json);
+            }
+        }
 
-                foreach(object item in items)
+        static void Calculate()
+        {
+            foreach (Pizza pizza in AllPizzas)
+            {
+                Pizza basePizzaToRate;
+                if(IsExists(pizza, out basePizzaToRate))
                 {
-                    string[] words = item.ToString().Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+                    PopularToppings[basePizzaToRate] = PopularToppings[basePizzaToRate] + 1;
+                }
+                else
+                {
+                    PopularToppings.Add(pizza, 1);
+                }
+            }
+        }
 
-                    string toppingName = "";
-                    foreach (string word in words)
-                    {
-                        toppingName = word.Replace("[", "");
-                        toppingName = toppingName.Replace("]", "");
-                        toppingName = toppingName.Replace("(", "");
-                        toppingName = toppingName.Replace(")", "");
-                        toppingName = toppingName.Replace(":", "");
-                        toppingName = toppingName.Replace(" ", "");
-                        toppingName = toppingName.Replace("\r\n", "");
-                        toppingName = toppingName.Replace("{", "");
-                        toppingName = toppingName.Replace("}", "");
-                        toppingName = toppingName.Replace("\\", "");
-                        toppingName = toppingName.Replace("\"", "");
-                        
-                        if (toppingName.Contains("toppings")) { continue; }
-                        if (toppingName.Length == 0) { continue; }
+        static bool IsExists(Pizza pizza, out Pizza basePizzaToRate)
+        {
+            basePizzaToRate = null;
+            foreach (Pizza PizzaFromRate in PopularToppings.Keys)
+            {
+                int foundedItems = 0;
+                foreach(string topping in pizza.Toppings)
+                {
+                    if (PizzaFromRate.Toppings.Contains(topping)) { foundedItems++; }
+                }
 
-                        if (ToppingCalculation.ContainsKey(toppingName)){
-                            ToppingCalculation[toppingName] = ToppingCalculation[toppingName] + 1;
-                        }
-                        else
-                        {
-                            ToppingNames.Add(toppingName);
-                            ToppingCalculation.Add(toppingName, 1);
-                        }
-                    }
+                if(foundedItems == PizzaFromRate.Toppings.Count) {
+                    basePizzaToRate = PizzaFromRate;
+                    return true; 
                 }
             }
 
-            Console.WriteLine("Toppings popularity:");
-            foreach (string toppingName in ToppingNames)
+            return false;
+        }
+
+        static void PrintResult()
+        {
+            Console.WriteLine("Receipts popularity");
+            Console.WriteLine("Receipts amount " + PopularToppings.Count.ToString());
+
+            var SortedPopularToppings = PopularToppings.OrderByDescending(key => key.Value).ToDictionary(p=>p.Key);
+
+            foreach (Pizza pizza in SortedPopularToppings.Keys)
             {
-                
-                Console.WriteLine(toppingName + " = " + ToppingCalculation[toppingName]);
+                Console.WriteLine(string.Format("Popularity: {0} Receipt: {1}", PopularToppings[pizza], string.Join(", ", pizza.Toppings)));
             }
 
             Console.WriteLine("Press any key to exit");
+
             Console.ReadKey();
         }
     }
