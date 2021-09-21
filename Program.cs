@@ -67,7 +67,7 @@ namespace AvengaPizaTest
                     if (PizzaFromRate.Toppings.Contains(topping)) { foundedItems++; }
                 }
 
-                if(foundedItems == PizzaFromRate.Toppings.Count) {
+                if(foundedItems == pizza.Toppings.Count) {
                     basePizzaToRate = PizzaFromRate;
                     return true; 
                 }
