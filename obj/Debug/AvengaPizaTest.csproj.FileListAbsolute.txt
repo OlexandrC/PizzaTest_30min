@@ -1,0 +1,10 @@
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\bin\Debug\AvengaPizaTest.exe.config
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\bin\Debug\AvengaPizaTest.exe
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\bin\Debug\AvengaPizaTest.pdb
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\bin\Debug\Newtonsoft.Json.dll
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\bin\Debug\Newtonsoft.Json.xml
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\obj\Debug\AvengaPizaTest.csproj.AssemblyReference.cache
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\obj\Debug\AvengaPizaTest.csproj.CoreCompileInputs.cache
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\obj\Debug\AvengaPizaTest.csproj.CopyComplete
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\obj\Debug\AvengaPizaTest.exe
+D:\GitHub_repositories\AvengaPizzaTest\AvengaPizaTest\obj\Debug\AvengaPizaTest.pdb
